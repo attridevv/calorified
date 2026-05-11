@@ -99,10 +99,8 @@ a { text-decoration: none; }
   pointer-events: none;
 }
 .brand-icon {
-  width: 36px; height: 36px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--cal), var(--fat));
+  width: 44px; height: 44px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 900; letter-spacing: -0.5px; color: #fff;
   flex-shrink: 0; position: relative; z-index: 1;
 }
 .brand-text { position: relative; z-index: 1; }
