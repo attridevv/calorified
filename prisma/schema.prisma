@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String       @id @default(cuid())
+  clerkId    String?      @unique
+  email      String       @unique
+  name       String?
+  image      String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  profile    Profile?
+  foodEntries FoodEntry[]
+  bodyStats   BodyStat[]
+  waterIntakes WaterIntake[]
+}
+
+model Profile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  calorieTarget   Int?     // daily kcal goal
+  proteinTarget   Int?     // grams
+  carbsTarget     Int?     // grams
+  fatTarget       Int?     // grams
+  waterTarget     Int?     // ml
+
+  age             Int?
+  sex             String?
+  height          Float?   // cm
+  activityLevel   String?  // sedentary/light/moderate/active/very_active
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model FoodEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime
+
+  mealType    String   @default("snack") // breakfast/lunch/dinner/snack
+  name        String
+  serving     Float?   // number of servings
+  calories    Float?
+  protein     Float?
+  carbs       Float?
+  fat         Float?
+  fiber       Float?
+  waterGrams  Float?
+
+  notes       String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model BodyStat {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime
+
+  weight      Float?   // kg
+  bodyFat     Float?   // percentage
+  waistCm     Float?
+  notes       String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model WaterIntake {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime
+
+  amountMl    Int      // ml
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+}
