@@ -123,7 +123,7 @@ export default function DashboardPage() {
 
       {entries?.length > 0 && (
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h3 className="text-sm font-medium text-zinc-300 mb-3">Today's Log</h3>
+          <h3 className="text-sm font-medium text-zinc-300 mb-3">Today&rsquo;s Log</h3>
           <div className="space-y-2">
             {entries.map((e: any, i: number) => (
               <div key={i} className="flex justify-between items-center py-2 border-b border-zinc-800 last:border-0 text-sm">

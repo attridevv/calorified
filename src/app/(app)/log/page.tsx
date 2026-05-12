@@ -20,11 +20,11 @@ export default function LogPage() {
   const [yesterdayEntries, setYesterdayEntries] = useState<any[]>([]);
   const [repeatLoading, setRepeatLoading] = useState(false);
 
-  useEffect(() => { loadToday(); }, []);
-
   const loadToday = () => {
     fetch("/api/food?today=1").then(r => r.json()).then(d => setEntries(d.entries || []));
   };
+
+  useEffect(() => { loadToday(); }, []);
 
   const addEntry = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,7 +168,7 @@ export default function LogPage() {
       {showRepeat && (
         <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-zinc-300">Repeat Yesterday's Meals?</h3>
+            <h3 className="text-sm font-medium text-zinc-300">Repeat Yesterday&rsquo;s Meals?</h3>
             <button onClick={() => setShowRepeat(false)} className="text-zinc-500 hover:text-zinc-300"><X className="h-4 w-4" /></button>
           </div>
           <div className="space-y-1 max-h-48 overflow-y-auto">

@@ -16,7 +16,7 @@ export default function CoachPage() {
 
   const calculateTDEE = () => {
     const { sex, weight, height, age, activityLevel } = form;
-    let bmr = sex === "male" ? 10 * weight + 6.25 * height - 5 * age + 5 : 10 * weight + 6.25 * height - 5 * age - 161;
+    const bmr = sex === "male" ? 10 * weight + 6.25 * height - 5 * age + 5 : 10 * weight + 6.25 * height - 5 * age - 161;
     const multipliers: Record<string, number> = { sedentary: 1.2, light: 1.375, moderate: 1.55, active: 1.725, very_active: 1.9 };
     return Math.round(bmr * (multipliers[activityLevel] || 1.55));
   };
