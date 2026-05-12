@@ -1,30 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Utensils, Droplets, Weight, Flame, TrendingUp, TrendingDown } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { Utensils, Droplets, Weight, Flame, TrendingUp, TrendingDown, Loader2, RefreshCw } from "lucide-react";
 
 export default function DashboardPage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     let c = false;
-    async function load() {
-      try {
-        const res = await fetch("/api/food?today=1");
-        if (!res.ok) throw new Error("Failed to load");
-        const json = await res.json();
-        if (!c) setData(json);
-      } catch (e: any) {
-        if (!c) setError(e.message);
-      } finally {
-        if (!c) setLoading(false);
-      }
+    try {
+      const res = await fetch("/api/food?today=1");
+      if (!res.ok) throw new Error("Database warming up. Try again.");
+      const json = await res.json();
+      if (!c) setData(json);
+    } catch (e: any) {
+      if (!c) setError(e.message || "Connection failed");
+    } finally {
+      if (!c) setLoading(false);
     }
-    load();
     return () => { c = true; };
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   if (loading) {
     return (
@@ -48,7 +51,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold text-zinc-100 mb-6">Dashboard</h1>
         <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
           <p className="text-red-400 text-sm">{error}</p>
-          <button onClick={() => window.location.reload()} className="mt-2 text-xs text-zinc-400 hover:text-zinc-200 underline">Retry</button>
+          <button onClick={loadData} className="mt-2 inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 underline"><RefreshCw className="h-3 w-3" /> Retry</button>
         </div>
       </div>
     );
